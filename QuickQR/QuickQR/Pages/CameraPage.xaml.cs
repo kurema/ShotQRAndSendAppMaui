@@ -9,6 +9,5 @@ public partial class CameraPage : ContentPage
 
 	private void cameraBarcodeReaderView_BarcodesDetected(object sender, ZXing.Net.Maui.BarcodeDetectionEventArgs e)
 	{
-
     }
 }
