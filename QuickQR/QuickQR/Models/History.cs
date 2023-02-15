@@ -11,5 +11,5 @@ public record History(ZXing.Net.Maui.BarcodeResult BarcodeResult, DateTimeOffset
 public record Histories
 {
 	public List<History> Items { get; init; } = new List<History>();
-	DateTimeOffset LastUpdated { get; init; } = DateTimeOffset.MinValue;
+	//DateTimeOffset LastUpdated { get; init; } = DateTimeOffset.MinValue;
 }

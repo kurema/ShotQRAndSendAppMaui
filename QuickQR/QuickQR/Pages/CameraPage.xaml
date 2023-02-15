@@ -4,5 +4,17 @@
              x:Class="QuickQR.Pages.CameraPage"
              xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
              Title="CameraPage">
-    <zxing:CameraBarcodeReaderView  x:Name="cameraBarcodeReaderView" BarcodesDetected="cameraBarcodeReaderView_BarcodesDetected" />
+    <Grid>
+        <zxing:CameraBarcodeReaderView  x:Name="cameraBarcodeReaderView" BarcodesDetected="cameraBarcodeReaderView_BarcodesDetected" />
+        <Border x:Name="notificationBorder" VerticalOptions="End" IsVisible="false" Stroke="RoundRectangle 3" BackgroundColor="{AppThemeBinding Dark=Black,Default=White,Light=White}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Label Text="More" />
+            </Grid>
+        </Border>
+    </Grid>
 </ContentPage>

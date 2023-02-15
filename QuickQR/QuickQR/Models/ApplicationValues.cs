@@ -14,22 +14,58 @@ public class ApplicationValues
 
 	public Histories? Histories { get; private set; } = null;
 
-	private static System.Threading.SemaphoreSlim SemaphoreHistory = new(1, 1);
+	private static SemaphoreSlim SemaphoreHistory = new(1, 1);
 
-	public static async Task LoadValues()
+	public ApplicationValues(string? profileName = null)
+	{
+		ProfileName = profileName;
+	}
+
+	public string? ProfileName { get; init; }
+
+	public async Task LoadValues()
 	{
 		await LoadHistories();
 	}
 
-	public static async Task LoadHistories()
+	public async Task LoadHistories()
 	{
-		Current.Histories = await LoadValue<Histories>("histories.xml", SemaphoreHistory);
+		Current.Histories = await LoadValue<Histories>(ProfileName, "histories.xml", SemaphoreHistory);
 	}
 
-	private static async Task<T?> LoadValue<T>(string filename, SemaphoreSlim semaphore) where T : class
+	public int MaxHistoryCount { get => 100; }
+
+	public async Task AddHistory(params ZXing.Net.Maui.BarcodeResult[] results)
+	{
+		if (Current.Histories is null) await LoadHistories();
+		if (Current.Histories is null) return;
+
+		var resultList = results.ToList();
+		var today = DateTimeOffset.UtcNow.Date;
+		foreach (var item in Current.Histories.Items)
+		{
+			if (item.Date != today) break;
+			foreach (var item2 in resultList) if (item.BarcodeResult == item2) resultList.Remove(item2);
+		}
+
+		{
+			var excessLength = Current.Histories.Items.Count + resultList.Count - Current.MaxHistoryCount;
+			while (excessLength > 0)
+			{
+				Current.Histories.Items.RemoveAt(Current.Histories.Items.Count - 1);
+				excessLength--;
+			}
+		}
+
+		Current.Histories.Items.AddRange(results.Select(a => new History(a, DateTimeOffset.UtcNow)));
+	}
+
+	private static async Task<T?> LoadValue<T>(string? profileName, string filename, SemaphoreSlim semaphore) where T : class
 	{
 		T? result = default;
-		var path = Path.Combine(FileSystem.Current.AppDataDirectory, filename);
+		var dirPath = (profileName is null) ? FileSystem.Current.AppDataDirectory : Path.Combine(FileSystem.Current.AppDataDirectory, profileName);
+		if (!Directory.Exists(dirPath)) try { Directory.CreateDirectory(dirPath); } catch { return null; }
+		var path = Path.Combine(dirPath, filename);
 		if (!File.Exists(path)) { Current.Histories = new(); return result; }
 		using var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
 		var xs = new System.Xml.Serialization.XmlSerializer(typeof(Histories));
