@@ -6,7 +6,7 @@
     <ListView>
         <ListView.ItemTemplate>
             <DataTemplate>
-                <ContentView Shadow="true">
+                <ContentView>
                     
                 </ContentView>
             </DataTemplate>
