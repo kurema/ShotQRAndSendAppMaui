@@ -6,16 +6,19 @@
              Title="CameraPage" x:Name="top">
     <Grid>
         <zxing:CameraBarcodeReaderView  x:Name="cameraBarcodeReaderView" BarcodesDetected="cameraBarcodeReaderView_BarcodesDetected" />
-        <Border Margin="10" x:Name="notificationBorder" VerticalOptions="End" IsVisible="false" StrokeShape="RoundRectangle 3" BackgroundColor="{AppThemeBinding Dark=Black,Default=White,Light=White}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <Label Text="{Binding Source={x:Reference top},Path=LastReadText}" Margin="5" VerticalOptions="Center"/>
-                <Label Text="More" Grid.Column="1" Margin="5" VerticalOptions="Center"/>
-            </Grid>
-        </Border>
+        <CollectionView VerticalOptions="End" ItemsSource="{Binding Source={x:Reference top},Path=LastestHistories}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border Margin="10" x:Name="notificationBorder" StrokeShape="RoundRectangle 3" BackgroundColor="{AppThemeBinding Dark=Black,Default=White,Light=White}" VerticalOptions="End">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                        </Border.GestureRecognizers>
+                        <Grid>
+                            <Label Text="{Binding BarcodeResult.Value}" Margin="5" VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>    
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </Grid>
 </ContentPage>

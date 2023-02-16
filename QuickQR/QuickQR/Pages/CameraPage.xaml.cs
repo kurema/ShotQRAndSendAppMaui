@@ -4,11 +4,11 @@ namespace QuickQR.Pages;
 
 public partial class CameraPage : ContentPage
 {
-	public string LastReadText { get => (string)GetValue(LastReadTextProprty); private set => SetValue(LastReadTextProprty, value); }
+	//public string LastReadText { get => (string)GetValue(LastReadTextProprty); private set => SetValue(LastReadTextProprty, value); }
 
-	public static readonly BindableProperty LastReadTextProprty = BindableProperty.CreateAttached(nameof(LastReadText), typeof(string), typeof(CameraPage), string.Empty);
+	//public static readonly BindableProperty LastReadTextProprty = BindableProperty.CreateAttached(nameof(LastReadText), typeof(string), typeof(CameraPage), string.Empty);
 
-	//public System.Collections.ObjectModel.ObservableCollection<string> ReadTexts { get; } = new();
+	public System.Collections.ObjectModel.ObservableCollection<Models.History> LastestHistories { get; } = new();
 
 
 	public CameraPage()
@@ -16,30 +16,38 @@ public partial class CameraPage : ContentPage
 		InitializeComponent();
 	}
 
-	private SemaphoreSlim SemaphoreShowResult = new(1, 1);
 
 	private async void cameraBarcodeReaderView_BarcodesDetected(object sender, ZXing.Net.Maui.BarcodeDetectionEventArgs e)
 	{
 		if (e.Results.Length <= 0) return;
-		_ = ApplicationValues.Current.AddHistory(e.Results);
+		(await ApplicationValues.Current.AddHistory(e.Results)).ToArray();
 
 		await this.Dispatcher.DispatchAsync(async () =>
 		{
-			var newText = e.Results.Last().Value;
-			if (LastReadText == newText) return;
-			await SemaphoreShowResult.WaitAsync();
 			try
 			{
-				if (LastReadText == newText) return;
-				LastReadText = newText;
-				notificationBorder.IsVisible = true;
+				List<History> appenddedItems = new();
+				for (int i = 0; i < e.Results.Length; i++)
+				{
+					if (LastestHistories.Any(a => a.BarcodeResult.Value == e.Results[i].Value)) continue;
+					var result = new History(e.Results[i], DateTimeOffset.UtcNow);
+					appenddedItems.Add(result);
+					LastestHistories.Add(result);
+				}
 				await Task.Delay(3000);
-				notificationBorder.IsVisible = false;
+				foreach (var item in appenddedItems)
+				{
+					LastestHistories.Remove(item);
+				}
 			}
-			finally
+			catch
 			{
-				SemaphoreShowResult.Release();
 			}
 		});
+	}
+
+	private void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+	{
+
 	}
 }

@@ -30,15 +30,15 @@ public class ApplicationValues
 
 	public async Task LoadHistories()
 	{
-		Current.Histories = await LoadValue<Histories>(ProfileName, "histories.xml", SemaphoreHistory);
+		Current.Histories = await LoadValue<Histories>(ProfileName, "histories.xml", SemaphoreHistory) ?? new Histories();
 	}
 
 	public int MaxHistoryCount { get => 100; }
 
-	public async Task AddHistory(params ZXing.Net.Maui.BarcodeResult[] results)
+	public async Task<IEnumerable<bool>> AddHistory(params ZXing.Net.Maui.BarcodeResult[] results)
 	{
 		if (Current.Histories is null) await LoadHistories();
-		if (Current.Histories is null) return;
+		if (Current.Histories is null) return results.Select(_ => false);
 
 		var resultList = results.ToList();
 		var today = DateTimeOffset.UtcNow.Date;
@@ -58,6 +58,7 @@ public class ApplicationValues
 		}
 
 		Current.Histories.Items.AddRange(results.Select(a => new History(a, DateTimeOffset.UtcNow)));
+		return results.Select(a => resultList.Contains(a));
 	}
 
 	private static async Task<T?> LoadValue<T>(string? profileName, string filename, SemaphoreSlim semaphore) where T : class
