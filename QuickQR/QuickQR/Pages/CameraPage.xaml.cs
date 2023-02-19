@@ -48,6 +48,6 @@ public partial class CameraPage : ContentPage
 
 	private void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
 	{
-
+		var history = (sender as BindableObject)?.BindingContext as History;
 	}
 }
