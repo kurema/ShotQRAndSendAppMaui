@@ -7,9 +7,10 @@
     xmlns:pages="clr-namespace:QuickQR.Pages"
     Shell.FlyoutBehavior="Disabled">
 
-    <ShellContent
-        Title="Camera"
-        ContentTemplate="{DataTemplate pages:CameraPage}"
-        Route="CameraPage" />
+    <TabBar>
+        <Tab Title="Camera" >
+            <ShellContent Title="Camera" ContentTemplate="{DataTemplate pages:CameraPage}" Route="CameraPage" />
+        </Tab>
+    </TabBar>
 
 </Shell>
