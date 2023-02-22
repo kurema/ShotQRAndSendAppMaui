@@ -2,12 +2,15 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="QuickQR.Pages.HistoryPage"
-             Title="HistoryPage">
-    <ListView>
+             xmlns:m="clr-namespace:QuickQR.Models"
+             Title="HistoryPage"
+             x:DataType="m:Histories"
+             >
+    <ListView ItemsSource="{Binding Items}">
         <ListView.ItemTemplate>
             <DataTemplate>
                 <ContentView>
-                    
+
                 </ContentView>
             </DataTemplate>
         </ListView.ItemTemplate>

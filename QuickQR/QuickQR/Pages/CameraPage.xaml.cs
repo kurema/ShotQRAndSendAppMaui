@@ -46,8 +46,15 @@ public partial class CameraPage : ContentPage
 		});
 	}
 
-	private void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+	private async void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
 	{
 		var history = (sender as BindableObject)?.BindingContext as History;
+		//Note:
+		//https://www.youtube.com/watch?v=8z8qz-PePlc
+		await Shell.Current.GoToAsync(new ShellNavigationState(nameof(ResultPage)), new Dictionary<string, object>()
+		{
+			{nameof(history.Date),history.Date},
+			{nameof(history.BarcodeResult),history.BarcodeResult }
+		});
 	}
 }

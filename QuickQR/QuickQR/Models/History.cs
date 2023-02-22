@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace QuickQR.Models;
 
+[QueryProperty(nameof(BarcodeResult), nameof(BarcodeResult))]
+[QueryProperty(nameof(Date), nameof(Date))]
 public record History(ZXing.Net.Maui.BarcodeResult BarcodeResult, DateTimeOffset Date);
 
 public record Histories
