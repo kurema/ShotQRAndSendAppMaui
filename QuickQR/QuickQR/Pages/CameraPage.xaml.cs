@@ -50,11 +50,12 @@ public partial class CameraPage : ContentPage
 	{
 		var history = (sender as BindableObject)?.BindingContext as History;
 		//Note:
+		//How to pass object. Basic.
 		//https://www.youtube.com/watch?v=8z8qz-PePlc
+		//https://learn.microsoft.com/ja-jp/xamarin/xamarin-forms/app-fundamentals/shell/navigation
 		await Shell.Current.GoToAsync(new ShellNavigationState(nameof(ResultPage)), new Dictionary<string, object>()
 		{
-			{nameof(history.Date),history.Date},
-			{nameof(history.BarcodeResult),history.BarcodeResult }
+			{ nameof(ResultPage.Item),history }
 		});
 	}
 }
