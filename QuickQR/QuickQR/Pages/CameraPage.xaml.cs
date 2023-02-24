@@ -20,7 +20,7 @@ public partial class CameraPage : ContentPage
 	private async void cameraBarcodeReaderView_BarcodesDetected(object sender, ZXing.Net.Maui.BarcodeDetectionEventArgs e)
 	{
 		if (e.Results.Length <= 0) return;
-		(await ApplicationValues.Current.AddHistory(e.Results)).ToArray();
+		await ApplicationValues.Current.AddHistory(e.Results);
 
 		await this.Dispatcher.DispatchAsync(async () =>
 		{
