@@ -6,13 +6,15 @@
              Title="Text"
              xmlns:vm="clr-namespace:QuickQR.Models"
              x:DataType="vm:History"
+             xmlns:resx="clr-namespace:QuickQR.Resx"
              >
     <ContentPage.Resources>
         <Style TargetType="Border" x:Key="ItemBorderStyle">
             <Setter Property="Margin" Value="5" />
             <Setter Property="Background" Value="{AppThemeBinding Dark=#222222,Default=#DDDDDD,Light=#DDDDDD}" />
-            <Setter Property="Padding" Value="10" />
+            <!--<Setter Property="Padding" Value="10" />-->
             <Setter Property="StrokeShape" Value="RoundRectangle 10" />
+            <Setter Property="StrokeThickness" Value="0" />
         </Style>
         <Style TargetType="Label" x:Key="LabelItemHeaderStyle">
             <Setter Property="Margin" Value="5" />
@@ -24,31 +26,34 @@
         <Style TargetType="Label" x:Key="LabelHeaderStyle">
             <Setter Property="Margin" Value="10" />
         </Style>
+        <Style TargetType="toolkit:Expander" x:Key="ExpanderItemStyle">
+            <Setter Property="Margin" Value="10" />
+        </Style>
     </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout>
-            <Label Text="About barcode" Style="{StaticResource LabelHeaderStyle}" />
+            <Label Text="{x:Static resx:Resource.Result_About_Title}" Style="{StaticResource LabelHeaderStyle}" />
             <Border Style="{StaticResource ItemBorderStyle}">
-                <toolkit:Expander IsExpanded="True">
+                <toolkit:Expander IsExpanded="True" Style="{StaticResource ExpanderItemStyle}">
                     <toolkit:Expander.Header>
-                        <Label Text="Barcode content" Style="{StaticResource Key=LabelItemHeaderStyle}" />
+                        <Label Text="{x:Static resx:Resource.Result_About_Content_Title}" Style="{StaticResource Key=LabelItemHeaderStyle}" />
                     </toolkit:Expander.Header>
                     <StackLayout Style="{StaticResource LayoutItemContentStyle}">
                         <Label Text="{Binding BarcodeResult.Value}" />
                     </StackLayout>
                 </toolkit:Expander>
             </Border>
-            <Border Style="{StaticResource ItemBorderStyle}">
-                <toolkit:Expander IsExpanded="True">
+            <Border Style="{x:StaticResource ItemBorderStyle}">
+                <toolkit:Expander IsExpanded="True" Style="{StaticResource ExpanderItemStyle}">
                     <toolkit:Expander.Header>
-                        <Label Text="Information on barcode" Style="{StaticResource Key=LabelItemHeaderStyle}" />
+                        <Label Text="{x:Static resx:Resource.Result_About_Info_Title}" Style="{StaticResource Key=LabelItemHeaderStyle}" />
                     </toolkit:Expander.Header>
                     <StackLayout Style="{StaticResource LayoutItemContentStyle}">
-                        <Label Text="{Binding BarcodeResult.Format,StringFormat='Format: {0}'}" />
+                        <Label Text="{Binding BarcodeResult.Format,StringFormat={x:Static resx:Resource.Result_About_Info_Format_Format}}" />
                     </StackLayout>
                 </toolkit:Expander>
             </Border>
-            <Label Text="Action" Style="{StaticResource LabelHeaderStyle}" />
+            <Label Text="{x:Static resx:Resource.Result_Action_Title}" Style="{StaticResource LabelHeaderStyle}" />
 
         </VerticalStackLayout>
     </ScrollView>

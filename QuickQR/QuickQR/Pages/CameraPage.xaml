@@ -9,7 +9,7 @@
         <CollectionView VerticalOptions="End" ItemsSource="{Binding Source={x:Reference top},Path=LastestHistories}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Border Margin="10" x:Name="notificationBorder" StrokeShape="RoundRectangle 3" BackgroundColor="{AppThemeBinding Dark=Black,Default=White,Light=White}" VerticalOptions="End">
+                    <Border Margin="10" Padding="5" x:Name="notificationBorder" StrokeShape="RoundRectangle 3" BackgroundColor="{AppThemeBinding Dark=Black,Default=White,Light=White}" VerticalOptions="End">
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
                         </Border.GestureRecognizers>
