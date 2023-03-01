@@ -36,7 +36,19 @@
             <Border Style="{StaticResource ItemBorderStyle}">
                 <toolkit:Expander IsExpanded="True" Style="{StaticResource ExpanderItemStyle}">
                     <toolkit:Expander.Header>
-                        <Label Text="{x:Static resx:Resource.Result_About_Content_Title}" Style="{StaticResource Key=LabelItemHeaderStyle}" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Image>
+                                <Image.Source>
+                                    <FontImageSource FontFamily="MaterialIconsR" Glyph="&#xef6b;" />
+                                </Image.Source>
+                            </Image>
+                            <Label Grid.Column="1" Text="{x:Static resx:Resource.Result_About_Content_Title}" Style="{StaticResource Key=LabelItemHeaderStyle}" />
+                        </Grid>
                     </toolkit:Expander.Header>
                     <StackLayout Style="{StaticResource LayoutItemContentStyle}">
                         <Label Text="{Binding BarcodeResult.Value}" />
@@ -46,7 +58,19 @@
             <Border Style="{x:StaticResource ItemBorderStyle}">
                 <toolkit:Expander IsExpanded="True" Style="{StaticResource ExpanderItemStyle}">
                     <toolkit:Expander.Header>
-                        <Label Text="{x:Static resx:Resource.Result_About_Info_Title}" Style="{StaticResource Key=LabelItemHeaderStyle}" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Image>
+                                <Image.Source>
+                                    <FontImageSource FontFamily="MaterialIconsR" Glyph="&#xe88e;" />
+                                </Image.Source>
+                            </Image>
+                            <Label Grid.Column="1" Text="{x:Static resx:Resource.Result_About_Info_Title}" Style="{StaticResource Key=LabelItemHeaderStyle}" />
+                        </Grid>
                     </toolkit:Expander.Header>
                     <StackLayout Style="{StaticResource LayoutItemContentStyle}">
                         <Label Text="{Binding BarcodeResult.Format,StringFormat={x:Static resx:Resource.Result_About_Info_Format_Format}}" />

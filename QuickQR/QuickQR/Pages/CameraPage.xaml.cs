@@ -1,4 +1,5 @@
 using QuickQR.Models;
+using ZXing.Net.Maui;
 
 namespace QuickQR.Pages;
 
@@ -57,5 +58,17 @@ public partial class CameraPage : ContentPage
 		{
 			{ nameof(ResultPage.Item),history }
 		});
+	}
+
+	protected override void OnAppearing()
+	{
+		try
+		{
+			//https://github.com/Redth/ZXing.Net.Maui/issues/67
+			cameraBarcodeReaderView.CameraLocation = CameraLocation.Front;
+			cameraBarcodeReaderView.CameraLocation = CameraLocation.Rear;
+		}
+		catch { }
+		base.OnAppearing();
 	}
 }

@@ -9,8 +9,22 @@
 
     <TabBar>
         <Tab Title="Camera" >
+            <Tab.Icon>
+                <FontImageSource FontFamily="MaterialIconsR" Glyph="&#xe412;" />
+            </Tab.Icon>
             <ShellContent Title="Camera" ContentTemplate="{DataTemplate pages:CameraPage}" Route="CameraPage" />
         </Tab>
+        <Tab Title="Histories">
+            <Tab.Icon>
+                <FontImageSource FontFamily="MaterialIconsR" Glyph="&#xe889;" />
+            </Tab.Icon>
+            <ShellContent Title="Histories" ContentTemplate="{DataTemplate pages:HistoryPage}" Route="HistoryPage" />
+        </Tab>
+        <Tab Title="Config">
+            <Tab.Icon>
+                <FontImageSource FontFamily="MaterialIconsR" Glyph="&#xe8b8;" />
+            </Tab.Icon>
+            <ShellContent Title="Config" ContentTemplate="{DataTemplate pages:ConfigPage}" Route="ConfigPage" />
+        </Tab>
     </TabBar>
-
 </Shell>
