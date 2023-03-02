@@ -15,6 +15,15 @@ public partial class CameraPage : ContentPage
 	public CameraPage()
 	{
 		InitializeComponent();
+
+		cameraBarcodeReaderView.Options = new BarcodeReaderOptions()
+		{
+			//To specify all formats:
+			//(BarcodeFormat) int.MaxValue
+			//But it brings too many noises.
+			Formats = BarcodeFormat.QrCode | BarcodeFormat.DataMatrix | BarcodeFormat.Pdf417 | BarcodeFormat.Aztec | BarcodeFormat.Ean13 | BarcodeFormat.Ean8 | BarcodeFormat.UpcE | BarcodeFormat.UpcA | BarcodeFormat.Code128 | BarcodeFormat.Code93 | BarcodeFormat.Code39 | BarcodeFormat.Itf,
+			Multiple = true,
+		};
 	}
 
 
@@ -31,6 +40,7 @@ public partial class CameraPage : ContentPage
 				for (int i = 0; i < e.Results.Length; i++)
 				{
 					if (LastestHistories.Any(a => a.BarcodeResult.Value == e.Results[i].Value)) continue;
+					//if (e.Results[i].Format is not BarcodeFormat.QrCode && e.Results[i].Value.Length <= 2) continue;
 					var result = new History(e.Results[i], DateTimeOffset.UtcNow);
 					appenddedItems.Add(result);
 					LastestHistories.Add(result);
@@ -70,5 +80,20 @@ public partial class CameraPage : ContentPage
 		}
 		catch { }
 		base.OnAppearing();
+	}
+
+	private void ToolbarItem_Clicked(object sender, EventArgs e)
+	{
+		cameraBarcodeReaderView.IsTorchOn = !cameraBarcodeReaderView.IsTorchOn;
+		//Binding do not work somehow.
+		//https://github.com/dotnet/maui/issues/10186
+		if ((sender is ToolbarItem tbi))
+		{
+			tbi.IconImageSource = new FontImageSource()
+			{
+				FontFamily = "MaterialIconsR",
+				Glyph = cameraBarcodeReaderView.IsTorchOn ? "\ue3e7" : "\ue3e6",
+			};
+		}
 	}
 }

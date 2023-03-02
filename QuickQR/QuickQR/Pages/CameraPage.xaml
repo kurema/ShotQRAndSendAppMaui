@@ -3,7 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="QuickQR.Pages.CameraPage"
              xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
+             xmlns:vc="clr-namespace:QuickQR.Helpers.ValueConverters"
              Title="CameraPage" x:Name="top">
+    <ContentPage.Resources>
+        <vc:BoolToStringValueConverter x:Key="b2svc" />
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Torch" Clicked="ToolbarItem_Clicked">
+            <ToolbarItem.IconImageSource>
+                <!--<FontImageSource FontFamily="MaterialIconsR" Glyph="{Binding Source={x:Reference cameraBarcodeReaderView},Path=IsTorchOn,Converter={StaticResource b2svc},Mode=OneWay,ConverterParameter='&#xe3e7;:&#xe3e6;'}" />-->
+                <FontImageSource FontFamily="MaterialIconsR" Glyph="&#xe3e6;" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
     <Grid>
         <zxing:CameraBarcodeReaderView  x:Name="cameraBarcodeReaderView" BarcodesDetected="cameraBarcodeReaderView_BarcodesDetected" />
         <CollectionView VerticalOptions="End" ItemsSource="{Binding Source={x:Reference top},Path=LastestHistories}">
