@@ -39,9 +39,9 @@ public partial class CameraPage : ContentPage
 				List<History> appenddedItems = new();
 				for (int i = 0; i < e.Results.Length; i++)
 				{
-					if (LastestHistories.Any(a => a.BarcodeResult.Value == e.Results[i].Value)) continue;
+					if (LastestHistories.Any(a => a.ResultEqual(e.Results[i]))) continue;
 					//if (e.Results[i].Format is not BarcodeFormat.QrCode && e.Results[i].Value.Length <= 2) continue;
-					var result = new History(e.Results[i], DateTimeOffset.UtcNow);
+					var result = new History(e.Results[i], DateTimeOffset.UtcNow, DateTimeOffset.UtcNow);
 					appenddedItems.Add(result);
 					LastestHistories.Add(result);
 				}

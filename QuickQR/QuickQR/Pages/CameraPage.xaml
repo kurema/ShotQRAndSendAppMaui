@@ -11,8 +11,9 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Torch" Clicked="ToolbarItem_Clicked">
             <ToolbarItem.IconImageSource>
-                <!--<FontImageSource FontFamily="MaterialIconsR" Glyph="{Binding Source={x:Reference cameraBarcodeReaderView},Path=IsTorchOn,Converter={StaticResource b2svc},Mode=OneWay,ConverterParameter='&#xe3e7;:&#xe3e6;'}" />-->
-                <FontImageSource FontFamily="MaterialIconsR" Glyph="&#xe3e6;" />
+                <!-- Folliwing Binding do not work correctly. But it works for the first time. -->
+                <FontImageSource FontFamily="MaterialIconsR" Glyph="{Binding Source={x:Reference cameraBarcodeReaderView},Path=IsTorchOn,Converter={StaticResource b2svc},Mode=OneWay,ConverterParameter='&#xe3e7;:&#xe3e6;'}" />
+                <!--<FontImageSource FontFamily="MaterialIconsR" Glyph="&#xe3e6;" />-->
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>

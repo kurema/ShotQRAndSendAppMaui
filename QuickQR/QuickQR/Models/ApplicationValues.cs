@@ -44,8 +44,8 @@ public class ApplicationValues
 		var today = DateTimeOffset.UtcNow.Date;
 		foreach (var item in Current.Histories.Items)
 		{
-			if (item.Date != today) break;
-			foreach (var item2 in resultList) if (item.BarcodeResult == item2) resultList.Remove(item2);
+			//if (item.LastUpdated.Date != today) break;
+			foreach (var item2 in resultList) if (item.ResultEqual(item2)) resultList.Remove(item2);
 		}
 
 		{
@@ -57,7 +57,7 @@ public class ApplicationValues
 			}
 		}
 
-		Current.Histories.Items.AddRange(results.Select(a => new History(a, DateTimeOffset.UtcNow)));
+		Current.Histories.Items.AddRange(results.Select(a => new History(a, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow)));
 		return results.Select(a => resultList.Contains(a));
 	}
 

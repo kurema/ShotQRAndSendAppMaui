@@ -7,8 +7,21 @@ using System.Threading.Tasks;
 namespace QuickQR.Models;
 
 [QueryProperty(nameof(BarcodeResult), nameof(BarcodeResult))]
-[QueryProperty(nameof(Date), nameof(Date))]
-public record History(ZXing.Net.Maui.BarcodeResult BarcodeResult, DateTimeOffset Date);
+[QueryProperty(nameof(LastUpdated), nameof(LastUpdated))]
+[QueryProperty(nameof(Created), nameof(Created))]
+
+public record History(ZXing.Net.Maui.BarcodeResult BarcodeResult, DateTimeOffset LastUpdated, DateTimeOffset Created)
+{
+	public bool ResultEqual(History other)
+	{
+		return ResultEqual(other.BarcodeResult);
+	}
+
+	public bool ResultEqual(ZXing.Net.Maui.BarcodeResult other)
+	{
+		return BarcodeResult?.Value == other?.Value && BarcodeResult?.Format == other?.Format;
+	}
+}
 
 public record Histories
 {
