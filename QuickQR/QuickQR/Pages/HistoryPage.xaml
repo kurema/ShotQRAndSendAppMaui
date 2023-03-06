@@ -6,11 +6,38 @@
              Title="HistoryPage"
              x:DataType="m:Histories"
              >
+    <ContentPage.Resources>
+        <Style TargetType="Border" x:Key="ItemBorderStyle">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Background" Value="{AppThemeBinding Dark=#222222,Default=#DDDDDD,Light=#DDDDDD}" />
+            <!--<Setter Property="Padding" Value="10" />-->
+            <Setter Property="StrokeShape" Value="RoundRectangle 10" />
+            <Setter Property="StrokeThickness" Value="0" />
+        </Style>
+    </ContentPage.Resources>
     <ListView ItemsSource="{Binding Items}">
         <ListView.ItemTemplate>
             <DataTemplate>
                 <ContentView>
-
+                    <Border Style="{StaticResource ItemBorderStyle}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="1*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Ellipse WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="Center" Grid.RowSpan="2">
+                            </Ellipse>
+                            <Image Grid.RowSpan="2" VerticalOptions="Center" HorizontalOptions="Center">
+                                <Image.Source>
+                                    <FontImageSource FontFamily="MaterialIconsR" Glyph="&#xef6b;" />
+                                </Image.Source>
+                            </Image>
+                        </Grid>
+                    </Border>
                 </ContentView>
             </DataTemplate>
         </ListView.ItemTemplate>

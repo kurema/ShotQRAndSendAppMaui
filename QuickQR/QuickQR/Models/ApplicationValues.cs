@@ -57,7 +57,16 @@ public class ApplicationValues
 			}
 		}
 
-		Current.Histories.Items.AddRange(results.Select(a => new History(a, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow)));
+		try
+		{
+			foreach (var item in results.Select(a => new History(a, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow)))
+			{
+				//Current.Histories.Items.Add(item);
+			}
+		}
+		catch (Exception e)
+		{
+		}
 		return results.Select(a => resultList.Contains(a));
 	}
 
