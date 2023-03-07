@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 #nullable enable
@@ -14,7 +15,7 @@ public class ApplicationValues
 
 	public Histories? Histories { get; private set; } = null;
 
-	private static SemaphoreSlim SemaphoreHistory = new(1, 1);
+	private static SemaphoreSlim SemaphoreHistoryLoad = new(1, 1);
 
 	public ApplicationValues(string? profileName = null)
 	{
@@ -30,44 +31,52 @@ public class ApplicationValues
 
 	public async Task LoadHistories()
 	{
-		Current.Histories = await LoadValue<Histories>(ProfileName, "histories.xml", SemaphoreHistory) ?? new Histories();
+		Current.Histories = await LoadValue<Histories>(ProfileName, "histories.xml", SemaphoreHistoryLoad) ?? new Histories();
 	}
 
 	public int MaxHistoryCount { get => 100; }
+
+	private static SemaphoreSlim SemaphoreHistoryAdd = new(1, 1);
 
 	public async Task<IEnumerable<bool>> AddHistory(params ZXing.Net.Maui.BarcodeResult[] results)
 	{
 		if (Current.Histories is null) await LoadHistories();
 		if (Current.Histories is null) return results.Select(_ => false);
 
-		var resultList = results.ToList();
-		var today = DateTimeOffset.UtcNow.Date;
-		foreach (var item in Current.Histories.Items)
-		{
-			//if (item.LastUpdated.Date != today) break;
-			foreach (var item2 in resultList) if (item.ResultEqual(item2)) resultList.Remove(item2);
-		}
-
-		{
-			var excessLength = Current.Histories.Items.Count + resultList.Count - Current.MaxHistoryCount;
-			while (excessLength > 0)
-			{
-				Current.Histories.Items.RemoveAt(Current.Histories.Items.Count - 1);
-				excessLength--;
-			}
-		}
-
+		await SemaphoreHistoryAdd.WaitAsync();
 		try
 		{
+			var resultList = results.ToList();
+			var today = DateTimeOffset.UtcNow.Date;
+			foreach (var item in Current.Histories.Items)
+			{
+				//if (item.LastUpdated.Date != today) break;
+				foreach (var item2 in resultList) if (item.ResultEqual(item2)) resultList.Remove(item2);
+			}
+
+			{
+				var excessLength = Current.Histories.Items.Count + resultList.Count - Current.MaxHistoryCount;
+				while (excessLength > 0)
+				{
+					Current.Histories.Items.RemoveAt(Current.Histories.Items.Count - 1);
+					excessLength--;
+				}
+			}
+
 			foreach (var item in results.Select(a => new History(a, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow)))
 			{
-				//Current.Histories.Items.Add(item);
+				Current.Histories.Items.Add(item);
 			}
+			return results.Select(a => resultList.Contains(a));
 		}
 		catch (Exception e)
 		{
+			return new bool[0];
 		}
-		return results.Select(a => resultList.Contains(a));
+		finally
+		{
+			SemaphoreHistoryAdd.Release();
+		}
 	}
 
 	private static async Task<T?> LoadValue<T>(string? profileName, string filename, SemaphoreSlim semaphore) where T : class

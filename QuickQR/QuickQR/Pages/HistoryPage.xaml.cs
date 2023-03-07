@@ -9,7 +9,7 @@ public partial class HistoryPage : ContentPage
 	{
 		InitializeComponent();
 
-		//Item = Models.ApplicationValues.Current?.Histories;
+		Item = Models.ApplicationValues.Current?.Histories;
 	}
 
 	public Histories Item
@@ -18,5 +18,10 @@ public partial class HistoryPage : ContentPage
 		{
 			this.BindingContext = value;
 		}
+	}
+
+	private void ViewCell_Tapped(object sender, EventArgs e)
+	{
+
 	}
 }
