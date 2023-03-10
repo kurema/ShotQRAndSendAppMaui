@@ -20,8 +20,12 @@ public partial class HistoryPage : ContentPage
 		}
 	}
 
-	private void ViewCell_Tapped(object sender, EventArgs e)
+	private async void ViewCell_Tapped(object sender, EventArgs e)
 	{
-
+		if ((sender as BindableObject)?.BindingContext is not History h) return;
+		await Shell.Current.GoToAsync(new ShellNavigationState(nameof(ResultPage)), new Dictionary<string, object>()
+		{
+			{ nameof(ResultPage.Item),h }
+		});
 	}
 }
