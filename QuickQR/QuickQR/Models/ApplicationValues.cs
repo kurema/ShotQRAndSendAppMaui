@@ -13,7 +13,7 @@ public class ApplicationValues
 {
 	public static ApplicationValues Current = new ApplicationValues();
 
-	public Histories? Histories { get; private set; } = null;
+	public Histories? Histories { get; private set; } = new();
 
 	private static SemaphoreSlim SemaphoreHistoryLoad = new(1, 1);
 

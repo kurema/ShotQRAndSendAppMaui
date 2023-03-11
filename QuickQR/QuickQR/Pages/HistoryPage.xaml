@@ -20,7 +20,7 @@
         </Style>
     </ContentPage.Resources>
     <ScrollView>
-        <ListView ItemsSource="{Binding Items}" SelectionMode="None" HasUnevenRows="True" SeparatorVisibility="None">
+        <ListView ItemsSource="{Binding Items,TargetNullValue={x:Array Type={Type m:History}}}" SelectionMode="None" HasUnevenRows="True" SeparatorVisibility="None" VerticalOptions="FillAndExpand">
             <ListView.Header>
                 <Label Text="{Binding Items.Count}" />
             </ListView.Header>
